@@ -10,7 +10,7 @@ Shader "Custom/Shader12"
         Tags { "RenderType"="Opaque" }
 
         CGPROGRAM
-        #pragma surface surf Test noambient
+        #pragma surface surf Test
 
         sampler2D _MainTex;
         sampler2D _BumpMap;
@@ -31,7 +31,10 @@ Shader "Custom/Shader12"
 
         float4 LightingTest(SurfaceOutput s, float3 lightDir, float atten) {
             float ndotl = saturate(dot(s.Normal, lightDir));
-            return ndotl;
+            float4 final;
+            final.rgb = (ndotl * s.Albedo * _LightColor0.rgb * atten);
+            final.a = s.Alpha;
+            return final;
         }
         ENDCG
     }
